@@ -1,36 +1,28 @@
 <?php
 
-namespace App\Filament\Resources\Events\Tables;
+namespace App\Filament\Resources\Visions\Tables;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\DeleteAction;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Table;
 
-
-class EventsTable
+class VisionsTable
 {
     public static function configure(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('judul')
+                TextColumn::make('visi')
                     ->searchable()
-                    ->label('Event'),
-                TextColumn::make('deskripsi')
-                    ->searchable(),
-                TextColumn::make('tanggal')
-                    ->date()
-                    ->sortable(),
-                TextColumn::make('client')
-                    ->searchable(),
-                ImageColumn::make('images.image')
-                    ->stacked()
-                    ->limit(1)
-                    ->height(40),  
+                    ->wrap()
+                    ->limit(100),
+                TextColumn::make('misi')
+                    ->searchable()
+                    ->wrap()
+                    ->limit(100),
             ])
             ->filters([
                 //

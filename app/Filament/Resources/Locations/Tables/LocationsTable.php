@@ -1,36 +1,24 @@
 <?php
 
-namespace App\Filament\Resources\Events\Tables;
+namespace App\Filament\Resources\Locations\Tables;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\DeleteAction;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Table;
 
-
-class EventsTable
+class LocationsTable
 {
     public static function configure(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('judul')
-                    ->searchable()
-                    ->label('Event'),
-                TextColumn::make('deskripsi')
+                TextColumn::make('nama_lokasi')
                     ->searchable(),
-                TextColumn::make('tanggal')
-                    ->date()
-                    ->sortable(),
-                TextColumn::make('client')
+                TextColumn::make('url_maps')
                     ->searchable(),
-                ImageColumn::make('images.image')
-                    ->stacked()
-                    ->limit(1)
-                    ->height(40),  
             ])
             ->filters([
                 //

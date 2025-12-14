@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\Events\Tables;
+namespace App\Filament\Resources\Productions\Tables;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
@@ -10,8 +10,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Table;
 
-
-class EventsTable
+class ProductionsTable
 {
     public static function configure(Table $table): Table
     {
@@ -19,7 +18,7 @@ class EventsTable
             ->columns([
                 TextColumn::make('judul')
                     ->searchable()
-                    ->label('Event'),
+                    ->label('Production'),
                 TextColumn::make('deskripsi')
                     ->searchable(),
                 TextColumn::make('tanggal')
@@ -30,7 +29,7 @@ class EventsTable
                 ImageColumn::make('images.image')
                     ->stacked()
                     ->limit(1)
-                    ->height(40),  
+                    ->height(40)
             ])
             ->filters([
                 //

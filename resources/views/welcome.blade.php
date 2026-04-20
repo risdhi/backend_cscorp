@@ -270,6 +270,23 @@
             </main>
         </div>
 
+        {{-- Visitor tracking endpoint. Tidak menggantungkan pada GET / yang bisa kena 304 cache. --}}
+        <script>
+            (function () {
+                try {
+                    var url = window.location.href;
+                    // Pastikan cookie dikirim (credentials).
+                    // Karena route didefinisikan di `routes/api.php`, path-nya otomatis menjadi `/api/__visitor/track`.
+                    fetch('/api/__visitor/track?url=' + encodeURIComponent(url), {
+                        method: 'GET',
+                        credentials: 'include',
+                        cache: 'no-store',
+                        keepalive: true
+                    }).catch(function () { /* ignore */ });
+                } catch (e) { /* ignore */ }
+            })();
+        </script>
+
         @if (Route::has('login'))
             <div class="h-14.5 hidden lg:block"></div>
         @endif

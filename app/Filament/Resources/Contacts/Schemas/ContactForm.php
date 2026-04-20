@@ -12,11 +12,18 @@ class ContactForm
         return $schema
             ->components([
                 TextInput::make('whatsapp')
-                    ->required(),
+                    ->label('WhatsApp')
+                    ->required()
+                    ->maxLength(255),
                 TextInput::make('email')
-                    ->label('Email address')
+                    ->label('Email')
                     ->email()
-                    ->required(),
+                    ->required()
+                    ->maxLength(255),
+                TextInput::make('working_hours')
+                    ->label('Working Hours')
+                    ->maxLength(255)
+                    ->placeholder('e.g., Mon-Fri 9AM-5PM'),
             ]);
     }
 }

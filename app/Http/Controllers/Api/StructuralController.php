@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Structural;
+use Illuminate\Http\Request;
 
 class StructuralController extends Controller
 {
@@ -13,7 +13,8 @@ class StructuralController extends Controller
      */
     public function index()
     {
-        $structural = \App\Models\Structural::all();
+        $structural = \App\Models\Structural::with('skills', 'sosmeds')->get();
+
         return response()->json($structural);
     }
 
@@ -30,10 +31,11 @@ class StructuralController extends Controller
      */
     public function show(string $id)
     {
-        $structural = Structural::find($id);
-        if (!$structural) {
+        $structural = Structural::with('skills', 'sosmeds')->find($id);
+        if (! $structural) {
             return response()->json(['message' => 'Structural not found'], 404);
         }
+
         return response()->json($structural);
     }
 

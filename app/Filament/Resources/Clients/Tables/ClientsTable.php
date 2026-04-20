@@ -19,7 +19,9 @@ class ClientsTable
                 TextColumn::make('nama_client')
                 ->label('Client')
                 ->searchable(),
-                ImageColumn::make('icon'),
+                ImageColumn::make('icon')
+                    ->disk('public')
+                    ->height(40),
             ])
             ->filters([
                 //

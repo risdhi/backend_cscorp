@@ -16,6 +16,10 @@ class Event extends Model
         'client',
     ];
 
+    protected $casts = [
+        'tanggal' => 'date',
+    ];
+
     public function images()
     {
         return $this->hasMany(EventImage::class);

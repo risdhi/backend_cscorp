@@ -19,9 +19,11 @@ class ClientForm
                     ->columnSpanFull(),
                 FileUpload::make('icon')
                     ->required()
-                    ->columnSpanFull()
+                    ->disk('public')
+                    ->directory('clients')
                     ->imageEditor()
-                    ->downloadable(),
+                    ->downloadable()
+                    ->columnSpanFull(),
             ]);
     }
 }

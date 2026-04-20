@@ -17,8 +17,8 @@ class ProductionsTable
         return $table
             ->columns([
                 TextColumn::make('judul')
-                    ->searchable()
-                    ->label('Production'),
+                    ->label('Production')
+                    ->searchable(),
                 TextColumn::make('deskripsi')
                     ->searchable(),
                 TextColumn::make('tanggal')
@@ -27,9 +27,9 @@ class ProductionsTable
                 TextColumn::make('client')
                     ->searchable(),
                 ImageColumn::make('images.image')
-                    ->stacked()
+                    ->disk('public')
                     ->limit(1)
-                    ->height(40)
+                    ->height(40),
             ])
             ->filters([
                 //
@@ -45,3 +45,4 @@ class ProductionsTable
             ]);
     }
 }
+

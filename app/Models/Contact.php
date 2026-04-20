@@ -12,5 +12,6 @@ class Contact extends Model
     protected $fillable = [
         'whatsapp',
         'email',
+        'working_hours',
     ];
 }

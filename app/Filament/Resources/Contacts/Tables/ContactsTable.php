@@ -16,10 +16,24 @@ class ContactsTable
         return $table
             ->columns([
                 TextColumn::make('whatsapp')
+                    ->label('WhatsApp')
                     ->searchable(),
                 TextColumn::make('email')
-                    ->label('Email address')
+                    ->label('Email')
                     ->searchable(),
+                TextColumn::make('working_hours')
+                    ->label('Working Hours')
+                    ->searchable(),
+                TextColumn::make('created_at')
+                    ->label('Dibuat')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('updated_at')
+                    ->label('Diupdate')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //

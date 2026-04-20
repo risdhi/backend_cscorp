@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\TrackVisitor;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -12,7 +13,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        // Tracking visitor bersifat global agar selalu jalan sebelum middleware
+        // yang bisa mengembalikan respons 304 lebih dulu.
+        $middleware->prepend([
+            TrackVisitor::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

@@ -20,9 +20,19 @@ class StructuralsTable
                     ->searchable(),
                 TextColumn::make('jabatan')
                     ->searchable(),
-                TextColumn::make('caption')
-                    ->searchable(),
-                ImageColumn::make('image'),
+                ImageColumn::make('image')
+                    ->disk('public')
+                    ->label('Foto'),
+                TextColumn::make('skills.pengalaman')
+                    ->listWithLineBreaks()
+                    ->label('Pengalaman')
+                    ->limitList(2)
+                    ->expandableLimitedList(),
+                TextColumn::make('sosmeds.nama_sosmed')
+                    ->listWithLineBreaks()
+                    ->label('Media Sosial')
+                    ->limitList(2)
+                    ->expandableLimitedList(),
             ])
             ->filters([
                 //

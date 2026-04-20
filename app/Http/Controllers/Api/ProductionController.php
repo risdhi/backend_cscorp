@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Production;
+use Illuminate\Http\Request;
 
 class ProductionController extends Controller
 {
@@ -14,6 +14,7 @@ class ProductionController extends Controller
     public function index()
     {
         $production = \App\Models\Production::with('images')->get();
+
         return response()->json($production);
     }
 
@@ -31,9 +32,10 @@ class ProductionController extends Controller
     public function show(string $id)
     {
         $production = Production::with('images')->find($id);
-        if (!$event) {
+        if (! $production) {
             return response()->json(['message' => 'Production not found'], 404);
         }
+
         return response()->json($production);
     }
 

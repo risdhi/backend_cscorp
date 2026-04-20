@@ -3,10 +3,9 @@
 namespace App\Filament\Resources\Productions\Schemas;
 
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
-use Filament\Forms\Components\Repeater;
-use Filament\Forms\Components\FileUpload;
 
 class ProductionForm
 {
@@ -15,26 +14,17 @@ class ProductionForm
         return $schema
             ->components([
                 TextInput::make('judul')
-                    ->required(),
-                TextInput::make('deskripsi')
-                    ->required(),
+                    ->label('Production')
+                    ->required()
+                    ->maxLength(255),
+                Textarea::make('deskripsi')
+                    ->required()
+                    ->columnSpanFull(),
                 DatePicker::make('tanggal')
                     ->required(),
                 TextInput::make('client')
-                    ->required(),
-                Repeater::make('images')
-                    ->relationship()
-                    ->schema([
-                        FileUpload::make('image')
-                            ->required()
-                            ->image()
-                            ->directory('productions')
-                            ->imageEditor()
-                            ->downloadable(),
-                    ])
-                    ->columns(1)
-                    ->columnSpanFull()
-                    ->grid(2),
+                    ->required()
+                    ->maxLength(255),
             ]);
     }
 }

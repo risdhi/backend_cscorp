@@ -6,6 +6,7 @@ use App\Models\Visitor;
 use Filament\Widgets\ChartWidget;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Carbon\Carbon;
 
 /**
  * Grafik pengunjung unik per hari (7 hari terakhir), data siap formar Chart.js.
@@ -33,26 +34,62 @@ class VisitorsChartWidget extends ChartWidget
     protected function getData(): array
     {
         $expr = $this->dayExpression();
-        $start = now()->subDays(6)->startOfDay();
 
-        $rows = Visitor::query()
-            ->where('visited_at', '>=', $start)
-            ->selectRaw("{$expr} as day")
-            ->selectRaw('COUNT(DISTINCT visitor_id) as visitors')
-            ->groupBy(DB::raw($expr))
-            ->orderBy('day')
-            ->get()
-            ->keyBy('day');
+        // Jika ada filter bulan (visitor_month=YYYY-MM), tampilkan per-hari pada bulan itu.
+        $requestedMonth = request()->query('visitor_month') ?? session('visitor_month') ?? request()->cookie('visitor_month');
+        if ($requestedMonth) {
+            try {
+                $start = Carbon::createFromFormat('Y-m', $requestedMonth)->startOfMonth()->startOfDay();
+                $end = Carbon::createFromFormat('Y-m', $requestedMonth)->endOfMonth()->endOfDay();
 
-        $labels = [];
-        $points = [];
+                $rows = Visitor::query()
+                    ->whereBetween('visited_at', [$start, $end])
+                    ->selectRaw("{$expr} as day")
+                    ->selectRaw('COUNT(DISTINCT visitor_id) as visitors')
+                    ->groupBy(DB::raw($expr))
+                    ->orderBy('day')
+                    ->get()
+                    ->keyBy('day');
 
-        // Pastikan 7 titik (termasuk hari dengan 0 visitor)
-        for ($i = 6; $i >= 0; $i--) {
-            $date = now()->subDays($i)->startOfDay();
-            $key = $date->format('Y-m-d');
-            $labels[] = $date->translatedFormat('D j/n');
-            $points[] = (int) ($rows[$key]->visitors ?? 0);
+                $labels = [];
+                $points = [];
+
+                $daysInMonth = $start->daysInMonth;
+                for ($d = 1; $d <= $daysInMonth; $d++) {
+                    $date = $start->copy()->startOfDay()->addDays($d - 1);
+                    $key = $date->format('Y-m-d');
+                    $labels[] = $date->translatedFormat('j M');
+                    $points[] = (int) ($rows[$key]->visitors ?? 0);
+                }
+            } catch (\Exception $e) {
+                // Jika format salah, fallback ke 7 hari terakhir
+                $requestedMonth = null;
+            }
+        }
+
+        // Default: 7 hari terakhir (tidak ada visitor_month atau parse gagal)
+        if (! $requestedMonth) {
+            $start = now()->subDays(6)->startOfDay();
+
+            $rows = Visitor::query()
+                ->where('visited_at', '>=', $start)
+                ->selectRaw("{$expr} as day")
+                ->selectRaw('COUNT(DISTINCT visitor_id) as visitors')
+                ->groupBy(DB::raw($expr))
+                ->orderBy('day')
+                ->get()
+                ->keyBy('day');
+
+            $labels = [];
+            $points = [];
+
+            // Pastikan 7 titik (termasuk hari dengan 0 visitor)
+            for ($i = 6; $i >= 0; $i--) {
+                $date = now()->subDays($i)->startOfDay();
+                $key = $date->format('Y-m-d');
+                $labels[] = $date->translatedFormat('D j/n');
+                $points[] = (int) ($rows[$key]->visitors ?? 0);
+            }
         }
 
         return [

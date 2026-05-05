@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Events\Schemas;
 
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
@@ -26,6 +27,14 @@ class EventForm
                 TextInput::make('client')
                     ->required()
                     ->maxLength(255),
+                FileUpload::make('images')
+                    ->label('Upload Images')
+                    ->image()
+                    ->multiple()
+                    ->disk('public')
+                    ->directory('events')
+                    ->columnSpanFull()
+                    ->nullable(),
             ]);
     }
 }
